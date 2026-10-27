@@ -1,0 +1,179 @@
+{
+  "spec_version": 1,
+  "app": {
+    "title": "Equipment Checkout",
+    "slug": "gear"
+  },
+  "roles": [
+    "admin",
+    "borrower"
+  ],
+  "entities": [
+    {
+      "name": "asset",
+      "kind": "reference",
+      "fields": [
+        {
+          "name": "tag",
+          "type": "text",
+          "required": true,
+          "unique": true
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "condition",
+          "type": "enum",
+          "values": [
+            "new",
+            "good",
+            "worn",
+            "broken"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "checkout",
+      "kind": "record",
+      "owner": "borrower",
+      "fields": [
+        {
+          "name": "asset",
+          "type": "ref",
+          "to": "asset",
+          "required": true
+        },
+        {
+          "name": "due_date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "name": "purpose",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "workflow": {
+    "entity": "checkout",
+    "level": "record",
+    "initial": "requested",
+    "states": [
+      "requested",
+      "approved",
+      "checked_out",
+      "returned",
+      "rejected"
+    ],
+    "transitions": [
+      {
+        "from": [
+          "requested"
+        ],
+        "to": "approved",
+        "roles": [
+          "admin"
+        ]
+      },
+      {
+        "from": [
+          "requested"
+        ],
+        "to": "rejected",
+        "roles": [
+          "admin"
+        ]
+      },
+      {
+        "from": [
+          "approved"
+        ],
+        "to": "checked_out",
+        "roles": [
+          "admin"
+        ]
+      },
+      {
+        "from": [
+          "checked_out"
+        ],
+        "to": "returned",
+        "roles": [
+          "admin"
+        ]
+      }
+    ]
+  },
+  "views": [
+    {
+      "type": "browse_pick",
+      "entity": "asset",
+      "submit": "checkout"
+    },
+    {
+      "type": "my_records",
+      "entity": "checkout"
+    },
+    {
+      "type": "queue",
+      "entity": "checkout",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "type": "report",
+      "name": "loans",
+      "entity": "checkout",
+      "roles": [
+        "admin"
+      ],
+      "columns": [
+        {
+          "source": "asset.name",
+          "label": "Equipment"
+        },
+        {
+          "source": "due_date",
+          "label": "Due"
+        },
+        {
+          "source": "purpose",
+          "label": "Purpose"
+        }
+      ],
+      "formats": [
+        "csv",
+        "xlsx"
+      ]
+    }
+  ],
+  "exports": [
+    {
+      "name": "overdue",
+      "from": "checkout",
+      "where": {
+        "state": "checked_out",
+        "due_date": "<today"
+      },
+      "formats": [
+        "csv",
+        "xlsx"
+      ]
+    }
+  ],
+  "dashboard": [
+    {
+      "label": "Checked out",
+      "count": "checkout",
+      "where": {
+        "state": "checked_out"
+      }
+    }
+  ]
+}

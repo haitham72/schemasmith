@@ -1,0 +1,83 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: schemasmith
+          POSTGRES_PASSWORD: ci-only-disposable
+          POSTGRES_DB: schemasmith_test
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U schemasmith -d schemasmith_test"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://schemasmith:ci-only-disposable@localhost:5432/schemasmith_test
+      EXAMPLE: access_requests
+      SIGNUP_DOMAIN: example.test
+      RUN_POSTGRES_TESTS: '1'
+      LLM_MODEL: ''
+      SCHEMA_EDIT: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements-dev.txt
+      - name: SQL interpolation scan (G3.3)
+        run: |
+          set -euo pipefail
+          hits=$(grep -rnE 'execute\(f"|execute\(".*\{|\.format\(' app/ || true)
+          printf '%s\n' "$hits"
+          test -z "$hits"
+      - name: JavaScript syntax
+        run: for file in static/*.js; do node --check "$file"; done
+      - name: Unit and database tests
+        run: python -m pytest -q --ignore=tests/e2e
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: schemasmith
+          POSTGRES_PASSWORD: ci-only-disposable
+          POSTGRES_DB: schemasmith_test
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U schemasmith -d schemasmith_test"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://schemasmith:ci-only-disposable@localhost:5432/schemasmith_test
+      RUN_POSTGRES_TESTS: '1'
+      RUN_E2E: '1'
+      LLM_MODEL: ''
+      SCHEMA_EDIT: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Chromium smoke on both examples
+        run: python -m pytest -q tests/e2e
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: schemasmith
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in .env}
+      POSTGRES_DB: schemasmith
+    ports:
+      - "127.0.0.1:${DB_PORT:-54321}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schemasmith -d schemasmith"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  web:
+    build: .
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://schemasmith:${DB_PASSWORD:?set DB_PASSWORD in .env}@db:5432/schemasmith}
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      SIGNUP_DOMAIN: ${SIGNUP_DOMAIN:-}
+      EXAMPLE: ${EXAMPLE:-}
+      GUEST_LOGIN: ${GUEST_LOGIN:-0}
+      GUEST_DESIGNER: ${GUEST_DESIGNER:-0}
+      SCHEMA_EDIT: ${SCHEMA_EDIT:-0}
+      LLM_BASE_URL: ${LLM_BASE_URL:-http://ollama:11434/v1}
+      LLM_MODEL: ${LLM_MODEL:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+    ports:
+      - "127.0.0.1:8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Optional local-model service. Start it with
+  # `docker compose --profile llm up -d`, then pull a model, for example
+  # `docker compose exec ollama ollama pull qwen3:8b` (needs internet).
+  ollama:
+    image: ollama/ollama:latest
+    profiles: [llm]
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  ollama:

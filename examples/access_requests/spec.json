@@ -1,0 +1,420 @@
+{
+  "spec_version": 1,
+  "app": {
+    "title": "Access Requests",
+    "slug": "access",
+    "signup_domain": null
+  },
+  "roles": [
+    "admin",
+    "reviewer",
+    "requester"
+  ],
+  "entities": [
+    {
+      "name": "topic",
+      "kind": "reference",
+      "hierarchy": {
+        "max_depth": 4
+      },
+      "fields": [
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "max": 80
+        },
+        {
+          "name": "icon",
+          "type": "text",
+          "default": "folder"
+        }
+      ]
+    },
+    {
+      "name": "tool",
+      "kind": "reference",
+      "parent": "topic",
+      "fields": [
+        {
+          "name": "name",
+          "type": "text",
+          "required": true,
+          "max": 120
+        },
+        {
+          "name": "domains",
+          "type": "list<domain>"
+        },
+        {
+          "name": "needs_review",
+          "type": "bool",
+          "default": true
+        },
+        {
+          "name": "notes",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "request",
+      "kind": "record",
+      "owner": "requester",
+      "fields": [
+        {
+          "name": "reason",
+          "type": "text",
+          "required": true,
+          "min": 3,
+          "max": 240
+        },
+        {
+          "name": "other",
+          "type": "text",
+          "max": 200
+        }
+      ],
+      "lines": {
+        "entity_ref": "tool",
+        "min": 1,
+        "max": 80
+      }
+    }
+  ],
+  "workflow": {
+    "entity": "request",
+    "level": "line",
+    "initial": "pending",
+    "states": [
+      "pending",
+      "approved",
+      "denied",
+      "needs_info"
+    ],
+    "transitions": [
+      {
+        "from": [
+          "pending",
+          "approved",
+          "denied",
+          "needs_info"
+        ],
+        "to": "approved",
+        "roles": [
+          "admin"
+        ]
+      },
+      {
+        "from": [
+          "pending",
+          "approved",
+          "denied",
+          "needs_info"
+        ],
+        "to": "denied",
+        "roles": [
+          "admin"
+        ]
+      },
+      {
+        "from": [
+          "pending",
+          "approved",
+          "denied",
+          "needs_info"
+        ],
+        "to": "needs_info",
+        "roles": [
+          "admin"
+        ],
+        "collects": "justification"
+      },
+      {
+        "from": [
+          "needs_info"
+        ],
+        "to": "pending",
+        "roles": [
+          "requester"
+        ],
+        "requires": "justification"
+      },
+      {
+        "from": [
+          "needs_info",
+          "approved",
+          "denied",
+          "pending"
+        ],
+        "to": "pending",
+        "roles": [
+          "admin"
+        ]
+      }
+    ],
+    "rollup": {
+      "all": {
+        "approved": "approved",
+        "denied": "denied"
+      },
+      "mixed": "partial",
+      "none_decided": "pending"
+    },
+    "limits": {
+      "per_user_per_day": 10
+    }
+  },
+  "views": [
+    {
+      "type": "browse_pick",
+      "entity": "tool",
+      "tree": "topic",
+      "submit": "request",
+      "roles": [
+        "requester"
+      ]
+    },
+    {
+      "type": "my_records",
+      "entity": "request"
+    },
+    {
+      "type": "queue",
+      "entity": "request",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "type": "report",
+      "name": "approvals",
+      "entity": "request",
+      "roles": [
+        "reviewer",
+        "admin"
+      ],
+      "columns": [
+        {
+          "source": "lines.ref.parent_path.name",
+          "label": "Category Path",
+          "empty": "?"
+        },
+        {
+          "source": "lines.ref.name",
+          "label": "Item Name",
+          "empty": "?"
+        },
+        {
+          "source": "lines.ref.domains",
+          "label": "Target Domains",
+          "empty": "?"
+        },
+        {
+          "source": "reason",
+          "label": "Business Reason",
+          "empty": "?"
+        },
+        {
+          "source": "lines.state",
+          "label": "Status",
+          "empty": "?"
+        },
+        {
+          "source": "lines.justification",
+          "label": "Reviewer Notes",
+          "empty": "?"
+        }
+      ],
+      "formats": [
+        "csv",
+        "xlsx"
+      ],
+      "workbook": {
+        "person_title": "ACCESS REQUEST CATALOG",
+        "state_source": "lines.state",
+        "state_labels": {
+          "approved": "Approved",
+          "denied": "Denied",
+          "needs_info": "Justify",
+          "pending": "Pending"
+        },
+        "state_colors": {
+          "approved": "positive",
+          "denied": "negative",
+          "needs_info": "waiting"
+        },
+        "matrix": {
+          "sheet": "Reviewer_Matrix",
+          "title": "ACCESS CONTROL MATRIX",
+          "key": "lines.ref.id",
+          "columns": [
+            {
+              "source": "lines.ref.parent_path.name",
+              "label": "Category Path",
+              "empty": "?"
+            },
+            {
+              "source": "lines.ref.name",
+              "label": "Item Name",
+              "empty": "?"
+            },
+            {
+              "source": "lines.ref.domains",
+              "label": "Domain",
+              "empty": "?"
+            }
+          ],
+          "state_labels": {
+            "approved": "ALLOW",
+            "denied": "DENY",
+            "needs_info": "PEND",
+            "pending": "PEND"
+          },
+          "count_value": "ALLOW",
+          "total_label": "Total Allowed"
+        },
+        "summary": {
+          "sheet": "Summary",
+          "title": "ACCESS OVERVIEW",
+          "headers": [
+            "Metric",
+            "Count"
+          ],
+          "metrics": [
+            {
+              "kind": "owners",
+              "label": "People with requests"
+            },
+            {
+              "kind": "groups",
+              "label": "Categories touched",
+              "source": "lines.ref.parent_path.name"
+            },
+            {
+              "kind": "items",
+              "label": "Tools requested"
+            },
+            {
+              "kind": "records",
+              "label": "Tickets"
+            },
+            {
+              "kind": "state",
+              "label": "Approved",
+              "state": "approved"
+            },
+            {
+              "kind": "state",
+              "label": "Denied",
+              "state": "denied"
+            },
+            {
+              "kind": "state",
+              "label": "Justify",
+              "state": "needs_info"
+            },
+            {
+              "kind": "state",
+              "label": "Pending",
+              "state": "pending"
+            }
+          ],
+          "per_person": {
+            "title": "PER PERSON",
+            "name_label": "Person",
+            "metrics": [
+              {
+                "kind": "records",
+                "label": "Tickets"
+              },
+              {
+                "kind": "items",
+                "label": "Tools"
+              },
+              {
+                "kind": "groups",
+                "label": "Categories",
+                "source": "lines.ref.parent_path.name"
+              },
+              {
+                "kind": "state",
+                "label": "Approved",
+                "state": "approved"
+              },
+              {
+                "kind": "state",
+                "label": "Denied",
+                "state": "denied"
+              },
+              {
+                "kind": "state",
+                "label": "Justify",
+                "state": "needs_info"
+              },
+              {
+                "kind": "state",
+                "label": "Pending",
+                "state": "pending"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "reference_editor",
+      "entities": [
+        "topic",
+        "tool"
+      ],
+      "roles": [
+        "admin"
+      ],
+      "import": "csv"
+    }
+  ],
+  "exports": [
+    {
+      "name": "allowlist",
+      "label": "Firewall allowlist",
+      "from": "request.lines.tool.domains",
+      "where": {
+        "state": "approved"
+      },
+      "distinct": true,
+      "columns": [
+        {
+          "source": "$value",
+          "label": "domain"
+        },
+        {
+          "source": "lines.ref.name",
+          "label": "granted_by",
+          "aggregate": "join_distinct",
+          "distinct_by": "lines.ref.id"
+        },
+        {
+          "source": "lines.ref.needs_review",
+          "label": "verified",
+          "aggregate": "none_true",
+          "true_label": "yes",
+          "false_label": "no"
+        }
+      ],
+      "formats": [
+        "txt",
+        "csv"
+      ]
+    }
+  ],
+  "dashboard": [
+    {
+      "label": "Waiting for you",
+      "count": "request",
+      "where": {
+        "state": "pending"
+      }
+    }
+  ]
+}

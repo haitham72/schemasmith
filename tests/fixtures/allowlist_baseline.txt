@@ -1,0 +1,5 @@
+domain,granted_by,verified
+files.pythonhosted.org,PyPI (all packages),yes
+huggingface.co,Hugging Face Hub; LM Studio,no
+lmstudio.ai,LM Studio,no
+pypi.org,PyPI (all packages),yes

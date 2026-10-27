@@ -1,0 +1,189 @@
+{
+  "report_view_additions": {
+    "name": "approvals",
+    "columns": [
+      {
+        "source": "lines.ref.parent_path.name",
+        "label": "Category Path",
+        "empty": "?"
+      },
+      {
+        "source": "lines.ref.name",
+        "label": "Item Name",
+        "empty": "?"
+      },
+      {
+        "source": "lines.ref.domains",
+        "label": "Target Domains",
+        "empty": "?"
+      },
+      {
+        "source": "reason",
+        "label": "Business Reason",
+        "empty": "?"
+      },
+      {
+        "source": "lines.state",
+        "label": "Status",
+        "empty": "?"
+      },
+      {
+        "source": "lines.justification",
+        "label": "Reviewer Notes",
+        "empty": "?"
+      }
+    ],
+    "workbook": {
+      "person_title": "ACCESS REQUEST CATALOG",
+      "state_source": "lines.state",
+      "state_labels": {
+        "approved": "Approved",
+        "denied": "Denied",
+        "needs_info": "Justify",
+        "pending": "Pending"
+      },
+      "state_colors": {
+        "approved": "positive",
+        "denied": "negative",
+        "needs_info": "waiting"
+      },
+      "matrix": {
+        "sheet": "Reviewer_Matrix",
+        "title": "ACCESS CONTROL MATRIX",
+        "key": "lines.ref.id",
+        "columns": [
+          {
+            "source": "lines.ref.parent_path.name",
+            "label": "Category Path",
+            "empty": "?"
+          },
+          {
+            "source": "lines.ref.name",
+            "label": "Item Name",
+            "empty": "?"
+          },
+          {
+            "source": "lines.ref.domains",
+            "label": "Domain",
+            "empty": "?"
+          }
+        ],
+        "state_labels": {
+          "approved": "ALLOW",
+          "denied": "DENY",
+          "needs_info": "PEND",
+          "pending": "PEND"
+        },
+        "count_value": "ALLOW",
+        "total_label": "Total Allowed"
+      },
+      "summary": {
+        "sheet": "Summary",
+        "title": "ACCESS OVERVIEW",
+        "headers": [
+          "Metric",
+          "Count"
+        ],
+        "metrics": [
+          {
+            "kind": "owners",
+            "label": "People with requests"
+          },
+          {
+            "kind": "groups",
+            "label": "Categories touched",
+            "source": "lines.ref.parent_path.name"
+          },
+          {
+            "kind": "items",
+            "label": "Tools requested"
+          },
+          {
+            "kind": "records",
+            "label": "Tickets"
+          },
+          {
+            "kind": "state",
+            "label": "Approved",
+            "state": "approved"
+          },
+          {
+            "kind": "state",
+            "label": "Denied",
+            "state": "denied"
+          },
+          {
+            "kind": "state",
+            "label": "Justify",
+            "state": "needs_info"
+          },
+          {
+            "kind": "state",
+            "label": "Pending",
+            "state": "pending"
+          }
+        ],
+        "per_person": {
+          "title": "PER PERSON",
+          "name_label": "Person",
+          "metrics": [
+            {
+              "kind": "records",
+              "label": "Tickets"
+            },
+            {
+              "kind": "items",
+              "label": "Tools"
+            },
+            {
+              "kind": "groups",
+              "label": "Categories",
+              "source": "lines.ref.parent_path.name"
+            },
+            {
+              "kind": "state",
+              "label": "Approved",
+              "state": "approved"
+            },
+            {
+              "kind": "state",
+              "label": "Denied",
+              "state": "denied"
+            },
+            {
+              "kind": "state",
+              "label": "Justify",
+              "state": "needs_info"
+            },
+            {
+              "kind": "state",
+              "label": "Pending",
+              "state": "pending"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "export_additions": {
+    "columns": [
+      {
+        "source": "$value",
+        "label": "domain"
+      },
+      {
+        "source": "lines.ref.name",
+        "label": "granted_by",
+        "aggregate": "join_distinct",
+        "distinct_by": "lines.ref.id"
+      },
+      {
+        "source": "lines.ref.needs_review",
+        "label": "verified",
+        "aggregate": "none_true",
+        "true_label": "yes",
+        "false_label": "no"
+      }
+    ]
+  }
+}

@@ -1,0 +1,2114 @@
+{
+  "$defs": {
+    "App": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "slug": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Slug",
+          "type": "string"
+        },
+        "signup_domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signup Domain"
+        }
+      },
+      "required": [
+        "title",
+        "slug"
+      ],
+      "title": "App",
+      "type": "object"
+    },
+    "BrowseView": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "roles": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^[a-z][a-z0-9_]{0,40}$",
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Roles"
+        },
+        "type": {
+          "const": "browse_pick",
+          "title": "Type",
+          "type": "string"
+        },
+        "entity": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Entity",
+          "type": "string"
+        },
+        "tree": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tree"
+        },
+        "submit": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Submit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "entity",
+        "submit"
+      ],
+      "title": "BrowseView",
+      "type": "object"
+    },
+    "Dashboard": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "count": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Count",
+          "type": "string"
+        },
+        "where": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Where",
+          "type": "object"
+        }
+      },
+      "required": [
+        "label",
+        "count"
+      ],
+      "title": "Dashboard",
+      "type": "object"
+    },
+    "EnumField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "enum": [
+            "enum",
+            "list<enum>"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "maxLength": 240,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "values"
+      ],
+      "title": "EnumField",
+      "type": "object"
+    },
+    "Export": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "from": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "From",
+          "type": "string"
+        },
+        "where": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Where",
+          "type": "object"
+        },
+        "distinct": {
+          "default": false,
+          "title": "Distinct",
+          "type": "boolean"
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ExportColumn"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Columns"
+        },
+        "formats": {
+          "items": {
+            "enum": [
+              "txt",
+              "csv",
+              "xlsx"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Formats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "from",
+        "formats"
+      ],
+      "title": "Export",
+      "type": "object"
+    },
+    "ExportColumn": {
+      "additionalProperties": false,
+      "description": "One grouped export column over a closed selector; aggregates are closed.",
+      "properties": {
+        "source": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "aggregate": {
+          "default": "value",
+          "enum": [
+            "value",
+            "join_distinct",
+            "none_true"
+          ],
+          "title": "Aggregate",
+          "type": "string"
+        },
+        "distinct_by": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distinct By"
+        },
+        "true_label": {
+          "default": "yes",
+          "maxLength": 80,
+          "title": "True Label",
+          "type": "string"
+        },
+        "false_label": {
+          "default": "no",
+          "maxLength": 80,
+          "title": "False Label",
+          "type": "string"
+        },
+        "empty": {
+          "default": "",
+          "maxLength": 240,
+          "title": "Empty",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "label"
+      ],
+      "title": "ExportColumn",
+      "type": "object"
+    },
+    "Hierarchy": {
+      "additionalProperties": false,
+      "properties": {
+        "max_depth": {
+          "default": 4,
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Depth",
+          "type": "integer"
+        }
+      },
+      "title": "Hierarchy",
+      "type": "object"
+    },
+    "IntField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "const": "int",
+          "title": "Type",
+          "type": "string"
+        },
+        "min": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min"
+        },
+        "max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "IntField",
+      "type": "object"
+    },
+    "Limits": {
+      "additionalProperties": false,
+      "properties": {
+        "per_user_per_day": {
+          "maximum": 10000,
+          "minimum": 1,
+          "title": "Per User Per Day",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "per_user_per_day"
+      ],
+      "title": "Limits",
+      "type": "object"
+    },
+    "Lines": {
+      "additionalProperties": false,
+      "properties": {
+        "entity_ref": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Entity Ref",
+          "type": "string"
+        },
+        "min": {
+          "default": 1,
+          "maximum": 500,
+          "minimum": 0,
+          "title": "Min",
+          "type": "integer"
+        },
+        "max": {
+          "default": 80,
+          "maximum": 500,
+          "minimum": 1,
+          "title": "Max",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "entity_ref"
+      ],
+      "title": "Lines",
+      "type": "object"
+    },
+    "ListField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "enum": [
+            "list<text>",
+            "list<int>",
+            "list<number>",
+            "list<bool>",
+            "list<date>",
+            "list<datetime>",
+            "list<domain>",
+            "list<email>",
+            "list<url>"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "ListField",
+      "type": "object"
+    },
+    "MatrixConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "sheet": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Sheet",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "key": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Key",
+          "type": "string"
+        },
+        "columns": {
+          "items": {
+            "$ref": "#/$defs/ReportColumn"
+          },
+          "minItems": 1,
+          "title": "Columns",
+          "type": "array"
+        },
+        "state_labels": {
+          "minProperties": 1,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,40}$": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "State Labels",
+          "type": "object"
+        },
+        "count_value": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Count Value",
+          "type": "string"
+        },
+        "total_label": {
+          "default": "Total Allowed",
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Total Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sheet",
+        "title",
+        "key",
+        "columns",
+        "state_labels",
+        "count_value"
+      ],
+      "title": "MatrixConfig",
+      "type": "object"
+    },
+    "NumberField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "const": "number",
+          "title": "Type",
+          "type": "string"
+        },
+        "min": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min"
+        },
+        "max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "NumberField",
+      "type": "object"
+    },
+    "PerPersonConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "name_label": {
+          "default": "Person",
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name Label",
+          "type": "string"
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/SummaryMetric"
+          },
+          "minItems": 1,
+          "title": "Metrics",
+          "type": "array"
+        }
+      },
+      "required": [
+        "title",
+        "metrics"
+      ],
+      "title": "PerPersonConfig",
+      "type": "object"
+    },
+    "RecordEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "fields": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "bool": "#/$defs/ScalarField",
+                "date": "#/$defs/ScalarField",
+                "datetime": "#/$defs/ScalarField",
+                "domain": "#/$defs/ScalarField",
+                "email": "#/$defs/ScalarField",
+                "enum": "#/$defs/EnumField",
+                "int": "#/$defs/IntField",
+                "list<bool>": "#/$defs/ListField",
+                "list<date>": "#/$defs/ListField",
+                "list<datetime>": "#/$defs/ListField",
+                "list<domain>": "#/$defs/ListField",
+                "list<email>": "#/$defs/ListField",
+                "list<enum>": "#/$defs/EnumField",
+                "list<int>": "#/$defs/ListField",
+                "list<number>": "#/$defs/ListField",
+                "list<ref>": "#/$defs/RefField",
+                "list<text>": "#/$defs/ListField",
+                "list<url>": "#/$defs/ListField",
+                "number": "#/$defs/NumberField",
+                "ref": "#/$defs/RefField",
+                "text": "#/$defs/TextField",
+                "url": "#/$defs/ScalarField"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextField"
+              },
+              {
+                "$ref": "#/$defs/IntField"
+              },
+              {
+                "$ref": "#/$defs/NumberField"
+              },
+              {
+                "$ref": "#/$defs/ScalarField"
+              },
+              {
+                "$ref": "#/$defs/EnumField"
+              },
+              {
+                "$ref": "#/$defs/RefField"
+              },
+              {
+                "$ref": "#/$defs/ListField"
+              }
+            ]
+          },
+          "maxItems": 30,
+          "title": "Fields",
+          "type": "array"
+        },
+        "kind": {
+          "const": "record",
+          "title": "Kind",
+          "type": "string"
+        },
+        "owner": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Owner"
+        },
+        "lines": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Lines"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name",
+        "fields",
+        "kind"
+      ],
+      "title": "RecordEntity",
+      "type": "object"
+    },
+    "RecordsView": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "roles": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^[a-z][a-z0-9_]{0,40}$",
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Roles"
+        },
+        "type": {
+          "enum": [
+            "my_records",
+            "queue"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "entity": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Entity",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "entity"
+      ],
+      "title": "RecordsView",
+      "type": "object"
+    },
+    "RefField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "enum": [
+            "ref",
+            "list<ref>"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "to": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "To",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "to"
+      ],
+      "title": "RefField",
+      "type": "object"
+    },
+    "ReferenceEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "fields": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "bool": "#/$defs/ScalarField",
+                "date": "#/$defs/ScalarField",
+                "datetime": "#/$defs/ScalarField",
+                "domain": "#/$defs/ScalarField",
+                "email": "#/$defs/ScalarField",
+                "enum": "#/$defs/EnumField",
+                "int": "#/$defs/IntField",
+                "list<bool>": "#/$defs/ListField",
+                "list<date>": "#/$defs/ListField",
+                "list<datetime>": "#/$defs/ListField",
+                "list<domain>": "#/$defs/ListField",
+                "list<email>": "#/$defs/ListField",
+                "list<enum>": "#/$defs/EnumField",
+                "list<int>": "#/$defs/ListField",
+                "list<number>": "#/$defs/ListField",
+                "list<ref>": "#/$defs/RefField",
+                "list<text>": "#/$defs/ListField",
+                "list<url>": "#/$defs/ListField",
+                "number": "#/$defs/NumberField",
+                "ref": "#/$defs/RefField",
+                "text": "#/$defs/TextField",
+                "url": "#/$defs/ScalarField"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextField"
+              },
+              {
+                "$ref": "#/$defs/IntField"
+              },
+              {
+                "$ref": "#/$defs/NumberField"
+              },
+              {
+                "$ref": "#/$defs/ScalarField"
+              },
+              {
+                "$ref": "#/$defs/EnumField"
+              },
+              {
+                "$ref": "#/$defs/RefField"
+              },
+              {
+                "$ref": "#/$defs/ListField"
+              }
+            ]
+          },
+          "maxItems": 30,
+          "title": "Fields",
+          "type": "array"
+        },
+        "kind": {
+          "const": "reference",
+          "title": "Kind",
+          "type": "string"
+        },
+        "hierarchy": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Hierarchy"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        }
+      },
+      "required": [
+        "name",
+        "fields",
+        "kind"
+      ],
+      "title": "ReferenceEntity",
+      "type": "object"
+    },
+    "ReferenceView": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "roles": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^[a-z][a-z0-9_]{0,40}$",
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Roles"
+        },
+        "type": {
+          "const": "reference_editor",
+          "title": "Type",
+          "type": "string"
+        },
+        "entities": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,40}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Entities",
+          "type": "array"
+        },
+        "import": {
+          "anyOf": [
+            {
+              "const": "csv",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Import"
+        }
+      },
+      "required": [
+        "type",
+        "entities"
+      ],
+      "title": "ReferenceView",
+      "type": "object"
+    },
+    "ReportColumn": {
+      "additionalProperties": false,
+      "description": "One closed selector plus its display label; no free SQL or formulas.",
+      "properties": {
+        "source": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "empty": {
+          "default": "",
+          "maxLength": 240,
+          "title": "Empty",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "label"
+      ],
+      "title": "ReportColumn",
+      "type": "object"
+    },
+    "ReportView": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "roles": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^[a-z][a-z0-9_]{0,40}$",
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Roles"
+        },
+        "type": {
+          "const": "report",
+          "title": "Type",
+          "type": "string"
+        },
+        "entity": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Entity",
+          "type": "string"
+        },
+        "columns": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ReportColumn"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Columns"
+        },
+        "where": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Where",
+          "type": "object"
+        },
+        "formats": {
+          "items": {
+            "enum": [
+              "csv",
+              "xlsx"
+            ],
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Formats",
+          "type": "array"
+        },
+        "workbook": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WorkbookConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "type",
+        "entity"
+      ],
+      "title": "ReportView",
+      "type": "object"
+    },
+    "Rollup": {
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,40}$": {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            }
+          },
+          "title": "All",
+          "type": "object"
+        },
+        "mixed": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Mixed",
+          "type": "string"
+        },
+        "none_decided": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "None Decided",
+          "type": "string"
+        }
+      },
+      "required": [
+        "all",
+        "mixed",
+        "none_decided"
+      ],
+      "title": "Rollup",
+      "type": "object"
+    },
+    "ScalarField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "enum": [
+            "bool",
+            "date",
+            "datetime",
+            "domain",
+            "email",
+            "url"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "ScalarField",
+      "type": "object"
+    },
+    "SummaryConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "sheet": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Sheet",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "headers": {
+          "items": {
+            "maxLength": 240,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Headers",
+          "type": "array"
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/SummaryMetric"
+          },
+          "minItems": 1,
+          "title": "Metrics",
+          "type": "array"
+        },
+        "per_person": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PerPersonConfig"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "sheet",
+        "title",
+        "headers",
+        "metrics"
+      ],
+      "title": "SummaryConfig",
+      "type": "object"
+    },
+    "SummaryMetric": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "owners",
+            "groups",
+            "items",
+            "records",
+            "state"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "state": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "State"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "title": "SummaryMetric",
+      "type": "object"
+    },
+    "SummaryView": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Name"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "roles": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^[a-z][a-z0-9_]{0,40}$",
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Roles"
+        },
+        "type": {
+          "enum": [
+            "exports",
+            "dashboard"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "SummaryView",
+      "type": "object"
+    },
+    "TextField": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "renamed_from": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Renamed From"
+        },
+        "required": {
+          "default": false,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "unique": {
+          "default": false,
+          "title": "Unique",
+          "type": "boolean"
+        },
+        "default": {
+          "default": null,
+          "title": "Default"
+        },
+        "type": {
+          "const": "text",
+          "title": "Type",
+          "type": "string"
+        },
+        "min": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min"
+        },
+        "max": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "TextField",
+      "type": "object"
+    },
+    "Transition": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,40}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "From",
+          "type": "array"
+        },
+        "to": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "To",
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,40}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Roles",
+          "type": "array"
+        },
+        "collects": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collects"
+        },
+        "requires": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requires"
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "roles"
+      ],
+      "title": "Transition",
+      "type": "object"
+    },
+    "WorkbookConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "person_title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Person Title",
+          "type": "string"
+        },
+        "state_source": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "State Source",
+          "type": "string"
+        },
+        "state_labels": {
+          "minProperties": 1,
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,40}$": {
+              "maxLength": 240,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "title": "State Labels",
+          "type": "object"
+        },
+        "state_colors": {
+          "patternProperties": {
+            "^[a-z][a-z0-9_]{0,40}$": {
+              "enum": [
+                "positive",
+                "negative",
+                "waiting"
+              ],
+              "type": "string"
+            }
+          },
+          "title": "State Colors",
+          "type": "object"
+        },
+        "matrix": {
+          "$ref": "#/$defs/MatrixConfig"
+        },
+        "summary": {
+          "$ref": "#/$defs/SummaryConfig"
+        }
+      },
+      "required": [
+        "person_title",
+        "state_source",
+        "state_labels",
+        "matrix",
+        "summary"
+      ],
+      "title": "WorkbookConfig",
+      "type": "object"
+    },
+    "Workflow": {
+      "additionalProperties": false,
+      "properties": {
+        "entity": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Entity",
+          "type": "string"
+        },
+        "level": {
+          "enum": [
+            "line",
+            "record"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "initial": {
+          "pattern": "^[a-z][a-z0-9_]{0,40}$",
+          "title": "Initial",
+          "type": "string"
+        },
+        "states": {
+          "items": {
+            "pattern": "^[a-z][a-z0-9_]{0,40}$",
+            "type": "string"
+          },
+          "maxItems": 12,
+          "minItems": 1,
+          "title": "States",
+          "type": "array"
+        },
+        "transitions": {
+          "items": {
+            "$ref": "#/$defs/Transition"
+          },
+          "maxItems": 144,
+          "title": "Transitions",
+          "type": "array"
+        },
+        "rollup": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Rollup"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "limits": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Limits"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "entity",
+        "level",
+        "initial",
+        "states",
+        "transitions"
+      ],
+      "title": "Workflow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "spec_version": {
+      "const": 1,
+      "title": "Spec Version",
+      "type": "integer"
+    },
+    "app": {
+      "$ref": "#/$defs/App"
+    },
+    "roles": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9_]{0,40}$",
+        "type": "string"
+      },
+      "maxItems": 20,
+      "minItems": 1,
+      "title": "Roles",
+      "type": "array"
+    },
+    "entities": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "record": "#/$defs/RecordEntity",
+            "reference": "#/$defs/ReferenceEntity"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ReferenceEntity"
+          },
+          {
+            "$ref": "#/$defs/RecordEntity"
+          }
+        ]
+      },
+      "maxItems": 20,
+      "title": "Entities",
+      "type": "array"
+    },
+    "workflow": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Workflow"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "views": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "browse_pick": "#/$defs/BrowseView",
+            "dashboard": "#/$defs/SummaryView",
+            "exports": "#/$defs/SummaryView",
+            "my_records": "#/$defs/RecordsView",
+            "queue": "#/$defs/RecordsView",
+            "reference_editor": "#/$defs/ReferenceView",
+            "report": "#/$defs/ReportView"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/BrowseView"
+          },
+          {
+            "$ref": "#/$defs/RecordsView"
+          },
+          {
+            "$ref": "#/$defs/ReportView"
+          },
+          {
+            "$ref": "#/$defs/ReferenceView"
+          },
+          {
+            "$ref": "#/$defs/SummaryView"
+          }
+        ]
+      },
+      "maxItems": 80,
+      "title": "Views",
+      "type": "array"
+    },
+    "exports": {
+      "items": {
+        "$ref": "#/$defs/Export"
+      },
+      "maxItems": 40,
+      "title": "Exports",
+      "type": "array"
+    },
+    "dashboard": {
+      "items": {
+        "$ref": "#/$defs/Dashboard"
+      },
+      "maxItems": 40,
+      "title": "Dashboard",
+      "type": "array"
+    }
+  },
+  "required": [
+    "spec_version",
+    "app",
+    "roles",
+    "entities",
+    "views"
+  ],
+  "title": "Spec",
+  "type": "object"
+}
